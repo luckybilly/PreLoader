@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">预加载</string>
+    <string name="pre_loader_inside_page_title">页面内部预加载</string>
+    <string name="pre_loader_before_page_title">startActivity之前预加载</string>
+    <string name="pre_loader_before_button_click">按钮点击之前预加载</string>
+    <string name="pre_loader_open_log">打开 log</string>
+    <string name="pre_loader_disable_log">关闭 log</string>
+    <string name="pre_loader_inside_page_readme">总耗时 = max(数据加载耗时, UI初始化耗时) + 数据展示到UI耗时</string>
+    <string name="pre_loader_before_open_page_readme">分2种情况：\n\n1. UI初始化先完成： \n\t总耗时 &lt; 数据加载耗时 + 数据展示到UI耗时 \n\n2. 数据加载先完成：\n\t总耗时 = UI初始化耗时 + 数据展示到UI耗时\n\n本页面为第( %d )种情况下的效果</string>
+    <string name="refresh">刷新</string>
+    <string name="pre_loader_refresh">页面内部调用刷新后的效果如下：</string>
+    <string name="error_no_pre_loader_id">没有preLoaderId</string>
+</resources>

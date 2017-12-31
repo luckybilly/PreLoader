@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">PreLoader</string>
+    <string name="pre_loader_inside_page_title">PreLoader inside page</string>
+    <string name="pre_loader_before_page_title">PreLoader before startActivity</string>
+    <string name="pre_loader_before_button_click">PreLoader before button click</string>
+    <string name="pre_loader_open_log">open log</string>
+    <string name="pre_loader_disable_log">disable log</string>
+    <string name="pre_loader_inside_page_readme">totalCostTime = max(dataLoadTime, UiInitialTime) + displayDataOnUiTime</string>
+    <string name="pre_loader_before_open_page_readme">There are 2 cases: \n\n1. UI initialization completed first: \n\t totalCostTime &lt; dataLoadTime + displayDataOnUiTime \n\n2. Data load completed first: \n\t totalCostTime = UiInitialTime + displayDataOnUiTime\n\nThis page is a demo for case( %d )</string>
+    <string name="refresh">refresh</string>
+    <string name="pre_loader_refresh">refresh result:</string>
+    <string name="error_no_pre_loader_id">no pre-load id for this page</string>
+</resources>
