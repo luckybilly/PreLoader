@@ -35,6 +35,7 @@ Activity打开之前就预加载数据，在Activity的UI布局初始化完成�
 - 支持一个加载任务(DataLoader)对应多个监听器(DataListener)
 - 支持为一个Activity配置多个预加载任务
 
+![image](image/PreLoader.png)
 
 ## 使用方法
 

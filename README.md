@@ -46,6 +46,8 @@ Continuous optimization, welcome watch, star!
 - support multiple preload tasks for an Activity
 
 
+![image](image/PreLoader.png)
+
 ## Usage
 
 1. add dependencies in build.gradle
