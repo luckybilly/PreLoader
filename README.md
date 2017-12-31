@@ -4,6 +4,8 @@
 
 [changelog](changelog.md)
 
+[中文文档](README-zh-CN.md)
+
 Pre-load data before Activity opens, and display data on UI after UI initialization. Speedup Activity launch
 
 You can start a PreLoader everywhere and start to listen data which loaded by the PreLoader with preLoaderId
