@@ -1,13 +1,13 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion "27.0.2"
+    compileSdkVersion 25
+    buildToolsVersion "25.0.0"
 
 
     defaultConfig {
         minSdkVersion 8
-        targetSdkVersion 26
+        targetSdkVersion 25
         versionCode 1
         versionName "1.0"
     }
@@ -21,6 +21,32 @@ android {
 
 }
 
-dependencies {
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
 
+ext {
+    bintrayRepo = 'android'
+    bintrayName = 'pre-loader'
+
+    publishedGroupId = 'com.billy.android'
+    libraryName = 'PreLoader'
+    artifact = 'pre-loader'
+
+    libraryDescription = 'android data pre-loader'
+
+    siteUrl = 'https://github.com/luckybilly/PreLoader'
+    gitUrl = 'git@github.com:luckybilly/PreLoader.git'
+
+    libraryVersion = '0.1.0'
+
+    developerId = 'billy'
+    developerName = 'billy'
+    developerEmail = 'okkanan@hotmail.com'
+
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
 }
+
+apply from: rootProject.file('bintray.gradle')
+

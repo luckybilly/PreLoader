@@ -1,11 +1,10 @@
 apply plugin: 'com.android.application'
-//apply plugin: 'walle'
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.0"
     defaultConfig {
         applicationId "com.billy.preloader"
-        minSdkVersion 14
+        minSdkVersion 9
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
@@ -38,14 +37,6 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:25.0.1'
-    compile project(':pre-loader')
+//    compile project(':pre-loader')
+    compile 'com.billy.android:pre-loader:0.1.0'
 }
-////美团walle多渠道打包： https://github.com/Meituan-Dianping/walle
-//walle {
-//    // 指定渠道包的输出路径
-//    apkOutputFolder = new File("${project.buildDir}/outputs/channels");
-//    // 定制渠道包的APK的文件名称
-//    apkFileNameFormat = '${appName}-${packageName}-${channel}-${buildType}-v${versionName}-${versionCode}-${buildTime}.apk';
-//    // 渠道配置文件
-//    channelFile = new File("${project.getProjectDir()}/channel")
-//}

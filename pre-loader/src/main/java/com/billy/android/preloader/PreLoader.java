@@ -107,7 +107,11 @@ public class PreLoader<T> {
         return PreLoaderPool.getDefault().refresh(id);
     }
 
-    public static boolean destroy() {
-        return PreLoaderPool.getDefault().destroy();
+    public static boolean destroy(int id) {
+        return PreLoaderPool.getDefault().destroy(id);
+    }
+
+    public static boolean destroyAll() {
+        return PreLoaderPool.getDefault().destroyAll();
     }
 }

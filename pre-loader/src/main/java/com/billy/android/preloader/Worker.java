@@ -42,7 +42,7 @@ class Worker<T> implements Runnable {
     private T loadedData;
     private final List<DataListener<T>> dataListeners = new CopyOnWriteArrayList<>();
     private DataLoader<T> dataLoader;
-    private State state;
+    private volatile State state;
 
     Worker(DataLoader<T> loader, DataListener<T> listener) {
         init(loader);
@@ -165,6 +165,7 @@ class Worker<T> implements Runnable {
         setState(new StateDestroyed(this));
         dataListeners.clear();
         dataLoader = null;
+        threadPoolExecutor = null;
         return true;
     }
 

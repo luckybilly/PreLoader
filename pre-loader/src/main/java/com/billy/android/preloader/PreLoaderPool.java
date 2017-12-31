@@ -69,7 +69,12 @@ public class PreLoaderPool {
         return worker != null && worker.refresh();
     }
 
-    public boolean destroy() {
+    public boolean destroy(int id) {
+        Worker worker = workerMap.remove(id);
+        return worker != null && worker.destroy();
+    }
+
+    public boolean destroyAll() {
         for (Worker worker : workerMap.values()) {
             if (worker != null) {
                 try {

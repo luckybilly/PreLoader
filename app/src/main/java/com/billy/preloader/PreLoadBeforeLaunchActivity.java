@@ -76,5 +76,8 @@ public class PreLoadBeforeLaunchActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (preLoaderId > 0) {
+            PreLoader.destroy(preLoaderId);
+        }
     }
 }
