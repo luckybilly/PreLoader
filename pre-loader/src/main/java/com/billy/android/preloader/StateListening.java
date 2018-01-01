@@ -2,6 +2,7 @@ package com.billy.android.preloader;
 
 
 /**
+ * DataListener is listening for data
  * @author billy.qi
  */
 class StateListening extends StateBase {

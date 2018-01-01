@@ -5,7 +5,7 @@ import com.billy.android.preloader.interfaces.DataListener;
 
 /**
  * pre-load finished
- * Preload.refresh() and Preload.listen(DataListener listener) are valid
+ * Preloader.refresh() and PreLoader.listen(DataListener listener) are valid
  */
 class StateDone extends StateBase {
     StateDone(Worker<?> worker) {

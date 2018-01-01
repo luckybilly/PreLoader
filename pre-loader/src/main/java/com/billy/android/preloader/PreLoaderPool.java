@@ -10,7 +10,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static com.billy.android.preloader.PreLoader.logger;
 
 /**
- * pool for HandlerThread
+ * pool for pre-load Worker
  * @author billy.qi
  */
 public class PreLoaderPool {
@@ -49,6 +49,10 @@ public class PreLoaderPool {
         return id;
     }
 
+    public boolean exists(int id) {
+        return workerMap.containsKey(id);
+    }
+
     public boolean listenData(int id) {
         Worker worker = workerMap.get(id);
         return worker != null && worker.listenData();
@@ -58,6 +62,16 @@ public class PreLoaderPool {
         try {
             Worker<T> worker = workerMap.get(id);
             return worker != null && worker.listenData(dataListener);
+        } catch(Exception e) {
+            logger.throwable(e);
+        }
+        return false;
+    }
+
+    public <T> boolean removeListener(int id, DataListener<T> dataListener) {
+        try {
+            Worker<T> worker = workerMap.get(id);
+            return worker != null && worker.removeListener(dataListener);
         } catch(Exception e) {
             logger.throwable(e);
         }

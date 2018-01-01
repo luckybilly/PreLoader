@@ -49,6 +49,10 @@ public class PreLoaderWrapper<T> {
         return worker.listenData(dataListener);
     }
 
+    public boolean removeListener(DataListener<T> dataListener) {
+        return worker.removeListener(dataListener);
+    }
+
     /**
      * re-load data for all listeners
      * @return success

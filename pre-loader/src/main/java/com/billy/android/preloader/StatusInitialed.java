@@ -4,6 +4,7 @@ package com.billy.android.preloader;
 import com.billy.android.preloader.interfaces.DataListener;
 
 /**
+ * initial state
  * @author billy.qi
  */
 class StatusInitialed extends StateBase {

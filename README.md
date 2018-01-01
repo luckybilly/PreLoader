@@ -45,6 +45,7 @@ Continuous optimization, welcome watch, star!
 
 - support multiple preload tasks for an Activity
 
+- support for add/remove listener dynamically
 
 ![image](image/PreLoader.png)
 

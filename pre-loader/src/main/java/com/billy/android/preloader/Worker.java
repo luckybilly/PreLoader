@@ -99,14 +99,20 @@ class Worker<T> implements Runnable {
     boolean listenData(DataListener<T> dataListener) {
         if (dataListener != null) {
             this.dataListeners.add(dataListener);
-            return state.listenData(dataListener);
-        } else {
-            return false;
         }
+        return state.listenData(dataListener);
     }
 
     boolean listenData() {
         return state.listenData();
+    }
+
+    boolean removeListener(DataListener<T> listener) {
+        return state.removeListener(listener);
+    }
+
+    boolean doRemoveListenerWork(DataListener<T> listener) {
+        return dataListeners.remove(listener);
     }
 
     boolean doDataLoadFinishWork() {
@@ -119,15 +125,19 @@ class Worker<T> implements Runnable {
     }
 
     boolean doSendLoadedDataToListenerWork(DataListener<T> listener) {
-        List<DataListener<T>> listeners = new ArrayList<>(1);
-        listeners.add(listener);
+
+        List<DataListener<T>> listeners = null;
+        if (listener != null) {
+            listeners = new ArrayList<>(1);
+            listeners.add(listener);
+        }
         return doSendLoadedDataToListenerWork(listeners);
     }
     private boolean doSendLoadedDataToListenerWork(final List<DataListener<T>> listeners) {
         if (!(state instanceof StateDone)) {
             setState(new StateDone(this));
         }
-        if (!listeners.isEmpty()) {
+        if (listeners != null && !listeners.isEmpty()) {
             if (isMainThread()) {
                 safeListenData(listeners, loadedData);
             } else {
@@ -138,10 +148,8 @@ class Worker<T> implements Runnable {
                     }
                 });
             }
-            return true;
-        } else {
-            return false;
         }
+        return true;
     }
 
     /**
@@ -149,9 +157,6 @@ class Worker<T> implements Runnable {
      * @return false if no {@link DataListener}, true otherwise
      */
     boolean doWaitForDataLoaderWork() {
-        if (dataListeners.isEmpty()) {
-            return false;
-        }
         // change current state to StateListening
         setState(new StateListening(this));
         return true;

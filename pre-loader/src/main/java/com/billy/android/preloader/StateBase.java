@@ -47,6 +47,12 @@ abstract class StateBase implements State {
     }
 
     @Override
+    public boolean removeListener(DataListener listener) {
+        log("removeListener");
+        return worker.doRemoveListenerWork(listener);
+    }
+
+    @Override
     public boolean dataLoadFinished() {
         log("dataLoadFinished()");
         return false;

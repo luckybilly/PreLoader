@@ -4,6 +4,7 @@ package com.billy.android.preloader;
 import com.billy.android.preloader.interfaces.DataListener;
 
 /**
+ * state of the pre-loader
  * @author billy.qi
  */
 interface State {
@@ -21,17 +22,24 @@ interface State {
     boolean destroy();
 
     /**
-     * 开始监听加载的数据（如果已经有数据则立即开始处理数据）
+     * start to listen data
      * @return
      */
     boolean listenData();
 
     /**
-     *
-     * @param listener
-     * @return
+     * start to listen data with a listener
+     * @param listener listener of data
+     * @return true if success
      */
     boolean listenData(DataListener listener);
+
+    /**
+     * remove listener
+     * @param listener listener of data
+     * @return true
+     */
+    boolean removeListener(DataListener listener);
 
     /**
      * data load finished by HandlerThread

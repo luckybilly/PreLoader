@@ -99,6 +99,14 @@ public class PreLoader<T> {
         return PreLoaderPool.getDefault().listenData(id, dataListener);
     }
 
+    public static <T> boolean removeListener(int id, DataListener<T> dataListener) {
+        return PreLoaderPool.getDefault().removeListener(id, dataListener);
+    }
+
+    public static <T> boolean exists(int id) {
+        return PreLoaderPool.getDefault().exists(id);
+    }
+
     /**
      * re-load data for all listeners
      * @return success
