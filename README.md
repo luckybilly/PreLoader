@@ -31,6 +31,8 @@ Continuous optimization, welcome watch, star!
 
 3. Pre-load data for complex UI Activity (UI initialization cost too much time)
 
+4. Pre-load data for next page of ListView/RecyclerView before pull to load more
+
 ## Features
 
 - support network data, network images, local images, database queries, and file I/O
