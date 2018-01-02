@@ -17,7 +17,7 @@ Activity打开之前就预加载数据，在Activity的UI布局初始化完成�
 
 [demo下载](demo.apk)
 
-<img src="image/cn_inside_page.png" height="400" /> <img src="image/cn_before_start_activity_1.png" height="400" /> <img src="image/cn_before_start_activity_2.png" height="400" />
+<img src="image/cn_inside_page.png" height="500" /> <img src="image/cn_before_start_activity_1.png" height="500" /> <img src="image/cn_before_start_activity_2.png" height="500" />
 
 
 ## 典型应用

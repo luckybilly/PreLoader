@@ -20,7 +20,7 @@ Continuous optimization, welcome watch, star!
 
 [demo download](demo.apk)
 
-<img src="image/inside_page.png" height="400" /> <img src="image/before_start_activity_1.png" height="400" /> <img src="image/before_start_activity_2.png" height="400" />
+<img src="image/inside_page.png" height="500" /> <img src="image/before_start_activity_1.png" height="500" /> <img src="image/before_start_activity_2.png" height="500" />
 
 
 ## Typically used for
