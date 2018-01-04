@@ -2,6 +2,10 @@
 
 最新版本： [![Download](https://api.bintray.com/packages/hellobilly/android/pre-loader/images/download.svg)](https://bintray.com/hellobilly/android/pre-loader/_latestVersion)
 
+
+[![GitHub stars](https://img.shields.io/github/stars/luckybilly/PreLoader.svg?style=social&label=Stars)](https://github.com/luckybilly/PreLoader)
+[![GitHub forks](https://img.shields.io/github/forks/luckybilly/PreLoader.svg?style=social&label=Fork)](https://github.com/luckybilly/PreLoader)
+
 [更新日志](changelog.md)
 
 Activity打开之前就预加载数据，在Activity的UI布局初始化完成后显示预加载的数据，大大缩短启动时间。

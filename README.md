@@ -2,6 +2,11 @@
 
 [![Download](https://api.bintray.com/packages/hellobilly/android/pre-loader/images/download.svg)](https://bintray.com/hellobilly/android/pre-loader/_latestVersion)
 
+
+[![GitHub stars](https://img.shields.io/github/stars/luckybilly/PreLoader.svg?style=social&label=Stars)](https://github.com/luckybilly/PreLoader)
+[![GitHub forks](https://img.shields.io/github/forks/luckybilly/PreLoader.svg?style=social&label=Fork)](https://github.com/luckybilly/PreLoader)
+
+
 [changelog](changelog.md)
 
 [中文文档](README-zh-CN.md)
