@@ -64,6 +64,7 @@ startActivity(intent);
 class Loader implements DataLoader<String> {
     @Override
     public String loadData() {
+        //此方法在线程池中运行，无需再开子线程去加载数据
         try {
             Thread.sleep(600);
         } catch (InterruptedException ignored) {
@@ -82,6 +83,7 @@ PreLoader.listenData(preLoaderId, new Listener());
 class Listener implements DataListener<String> {
     @Override
     public void onDataArrived(String data) {
+        //此方法在主线程中运行，无需使用Handler切换线程运行
         Toast.makeText(activity, data, Toast.LENGTH_SHORT).show();
     }
 }

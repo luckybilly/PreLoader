@@ -76,6 +76,8 @@ startActivity(intent);
 class Loader implements DataLoader<String> {
     @Override
     public String loadData() {
+        //this method runs in thread pool
+        // load data in this method synchronously
         try {
             Thread.sleep(600);
         } catch (InterruptedException ignored) {
@@ -94,6 +96,7 @@ PreLoader.listenData(preLoaderId, new Listener());
 class Listener implements DataListener<String> {
     @Override
     public void onDataArrived(String data) {
+        // this method runs on main thread, Handler is not required
         Toast.makeText(activity, data, Toast.LENGTH_SHORT).show();
     }
 }
