@@ -41,6 +41,7 @@ class Worker<T> implements Runnable {
 
     private T loadedData;
     private final List<DataListener<T>> dataListeners = new CopyOnWriteArrayList<>();
+    private final Handler mainThreadHandler = new Handler(Looper.getMainLooper());
     private DataLoader<T> dataLoader;
     private volatile State state;
 
@@ -97,9 +98,6 @@ class Worker<T> implements Runnable {
     }
 
     boolean listenData(DataListener<T> dataListener) {
-        if (dataListener != null) {
-            this.dataListeners.add(dataListener);
-        }
         return state.listenData(dataListener);
     }
 
@@ -128,6 +126,7 @@ class Worker<T> implements Runnable {
 
         List<DataListener<T>> listeners = null;
         if (listener != null) {
+            this.dataListeners.add(listener);
             listeners = new ArrayList<>(1);
             listeners.add(listener);
         }
@@ -141,7 +140,7 @@ class Worker<T> implements Runnable {
             if (isMainThread()) {
                 safeListenData(listeners, loadedData);
             } else {
-                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                mainThreadHandler.post(new Runnable() {
                     @Override
                     public void run() {
                         safeListenData(listeners, loadedData);
@@ -152,6 +151,12 @@ class Worker<T> implements Runnable {
         return true;
     }
 
+    boolean doWaitForDataLoaderWork(DataListener<T> listener) {
+        if (listener != null) {
+            dataListeners.add(listener);
+        }
+        return doWaitForDataLoaderWork();
+    }
     /**
      * waiting for {@link DataLoader#loadData()} finish
      * @return false if no {@link DataListener}, true otherwise
@@ -168,6 +173,7 @@ class Worker<T> implements Runnable {
 
     boolean doDestroyWork() {
         setState(new StateDestroyed(this));
+        mainThreadHandler.removeCallbacksAndMessages(null);
         dataListeners.clear();
         dataLoader = null;
         threadPoolExecutor = null;
@@ -207,6 +213,11 @@ class Worker<T> implements Runnable {
 
     private void setState(State state) {
         if (state != null) {
+            if (this.state != null) {
+                if (this.state.getClass() == state.getClass()) {
+                    return;
+                }
+            }
             this.state = state;
             logger.info("set state to:" + state.name());
         }

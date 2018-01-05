@@ -14,7 +14,7 @@ import java.util.concurrent.ExecutorService;
  *
  * @author billy.qi <a href="mailto:qiyilike@163.com">Contact me.</a>
  */
-public class PreLoader<T> {
+public class PreLoader {
     static ILogger logger = new PreLoaderLogger();
 
     /**
@@ -46,6 +46,7 @@ public class PreLoader<T> {
 
     /**
      * start a pre-loader for {@link DataListener}
+     * you can handle the {@link PreLoaderWrapper} object to do whatever you want
      * @param loader data loader
      * @param listener data listener
      * @return {@link PreLoaderWrapper}
@@ -62,14 +63,19 @@ public class PreLoader<T> {
         return preLoader;
     }
 
+    /**
+     * set a custom thread pool for all pre-load tasks
+     * @param threadPoolExecutor thread pool
+     */
     public static void setDefaultThreadPoolExecutor(ExecutorService threadPoolExecutor) {
         Worker.setDefaultThreadPoolExecutor(threadPoolExecutor);
     }
 
     /**
-     * provide a entrance for singleton {@link PreLoaderPool} <br>
-     * this method always returns the same object
-     * @return the singleton object of {@link PreLoaderPool}
+     * provide a entrance for pre-load data in singleton {@link PreLoaderPool} <br>
+     * @param loader data loader
+     * @param listeners listeners start work after both of loader.loadData() completed and PreLoader.listenData(id) called
+     * @return id for this loader
      */
     public static <E> int preLoad(DataLoader<E> loader, List<DataListener<E>> listeners) {
         return PreLoaderPool.getDefault().preLoad(loader, listeners);
@@ -79,6 +85,11 @@ public class PreLoader<T> {
         return PreLoaderPool.getDefault().preLoad(loader, listener);
     }
 
+    /**
+     * provide a entrance for pre-load data in singleton {@link PreLoaderPool} <br>
+     * @param loader data loader
+     * @return id for this loader
+     */
     public static <E> int preLoad(DataLoader<E> loader) {
         return PreLoaderPool.getDefault().preLoad(loader);
     }
@@ -91,19 +102,48 @@ public class PreLoader<T> {
         return new PreLoaderPool();
     }
 
+    /**
+     * start to listen data by id<br>
+     * 1. if pre-load task starts via {@link #preLoad(DataLoader, DataListener)} or {@link #preLoad(DataLoader, List)}
+     * the listeners will be called when {@link DataLoader#loadData()} completed<br>
+     * 2. if pre-load task starts via {@link #preLoad(DataLoader)}, 
+     *  and call this method without any {@link DataListener}, 
+     *  the pre-load only change the state to {@link StateDone},
+     *  you can get data later by {@link #preLoad(DataLoader, DataListener)} and {@link #preLoad(DataLoader, List)}
+     * @param id the id returns by {@link #preLoad(DataLoader)}
+     * @return success or not
+     */
     public static boolean listenData(int id) {
         return PreLoaderPool.getDefault().listenData(id);
     }
 
+    /**
+     * start to listen data with {@link DataListener} by id<br>
+     * @see #listenData(int)  PreLoader.listenData(int) for more details
+     * @param id the id returns by {@link #preLoad(DataLoader)}
+     * @param dataListener the dataListener.onDataArrived(data) will be called if data load is completed
+     * @return success or not
+     */
     public static  <T> boolean listenData(int id, DataListener<T> dataListener) {
         return PreLoaderPool.getDefault().listenData(id, dataListener);
     }
 
+    /**
+     * remove a specified {@link DataListener} for the pre-load task by id
+     * @param id the id returns by {@link #preLoad(DataLoader)}
+     * @param dataListener the listener to remove
+     * @return success or not
+     */
     public static <T> boolean removeListener(int id, DataListener<T> dataListener) {
         return PreLoaderPool.getDefault().removeListener(id, dataListener);
     }
 
-    public static <T> boolean exists(int id) {
+    /**
+     * check the pre-load task is exists in singleton {@link PreLoaderPool}
+     * @param id the id returns by {@link #preLoad(DataLoader)}
+     * @return exists or not
+     */
+    public static boolean exists(int id) {
         return PreLoaderPool.getDefault().exists(id);
     }
 
@@ -115,10 +155,20 @@ public class PreLoader<T> {
         return PreLoaderPool.getDefault().refresh(id);
     }
 
+    /**
+     * destroy the pre-load task by id.
+     * call this method for remove loader and all listeners, and will not accept any listeners
+     * @param id the id returns by {@link #preLoad(DataLoader)}
+     * @return success or not
+     */
     public static boolean destroy(int id) {
         return PreLoaderPool.getDefault().destroy(id);
     }
 
+    /**
+     * destroy all pre-load tasks in singleton {@link PreLoaderPool}
+     * @return success or not
+     */
     public static boolean destroyAll() {
         return PreLoaderPool.getDefault().destroyAll();
     }

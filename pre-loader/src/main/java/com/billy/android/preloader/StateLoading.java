@@ -26,7 +26,7 @@ class StateLoading extends StateBase {
     @Override
     public boolean listenData(DataListener listener) {
         super.listenData(listener);
-        return worker.doWaitForDataLoaderWork();
+        return worker.doWaitForDataLoaderWork(listener);
     }
 
     /**
