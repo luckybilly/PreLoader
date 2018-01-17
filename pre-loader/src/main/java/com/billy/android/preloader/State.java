@@ -42,7 +42,7 @@ interface State {
     boolean removeListener(DataListener listener);
 
     /**
-     * data load finished by HandlerThread
+     * data load finished
      * @return
      */
     boolean dataLoadFinished();

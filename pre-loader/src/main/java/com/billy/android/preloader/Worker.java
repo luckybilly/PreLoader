@@ -181,10 +181,9 @@ class Worker<T> implements Runnable {
     }
 
     /**
-     * load data on HandlerThread
+     * load data in thread-pool
      * if state is {@link StateListening} : send data to {@link DataListener}
      * if state is {@link StateLoading} : change state to {@link StateLoadCompleted}
-     * add worker to MessageQueue as IdleHandler
      */
     @Override
     public void run() {
