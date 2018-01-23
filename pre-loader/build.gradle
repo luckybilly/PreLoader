@@ -37,7 +37,7 @@ ext {
     siteUrl = 'https://github.com/luckybilly/PreLoader'
     gitUrl = 'git@github.com:luckybilly/PreLoader.git'
 
-    libraryVersion = '1.1.0'
+    libraryVersion = '2.0.0'
 
     developerId = 'billy'
     developerName = 'billy'

@@ -3,6 +3,8 @@ package com.billy.android.preloader;
 
 import com.billy.android.preloader.interfaces.DataListener;
 import com.billy.android.preloader.interfaces.DataLoader;
+import com.billy.android.preloader.interfaces.GroupedDataListener;
+import com.billy.android.preloader.interfaces.GroupedDataLoader;
 import com.billy.android.preloader.util.ILogger;
 import com.billy.android.preloader.util.PreLoaderLogger;
 
@@ -95,6 +97,16 @@ public class PreLoader {
     }
 
     /**
+     * pre-load data with a group loaders in only one pre-load-id
+     * eg. pre-load data in an activity with lots of {@link DataLoader}
+     * @param loaders
+     * @return
+     */
+    public static int preLoad(GroupedDataLoader... loaders) {
+        return PreLoaderPool.getDefault().preLoadGroup(loaders);
+    }
+
+    /**
      * provide a entrance for create a new {@link PreLoaderPool} object
      * @return a new object of {@link PreLoaderPool}
      */
@@ -126,6 +138,10 @@ public class PreLoader {
      */
     public static  <T> boolean listenData(int id, DataListener<T> dataListener) {
         return PreLoaderPool.getDefault().listenData(id, dataListener);
+    }
+
+    public static boolean listenData(int id, GroupedDataListener... listeners) {
+        return PreLoaderPool.getDefault().listenData(id, listeners);
     }
 
     /**

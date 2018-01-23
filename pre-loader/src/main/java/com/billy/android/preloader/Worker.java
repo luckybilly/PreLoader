@@ -22,7 +22,7 @@ import static com.billy.android.preloader.PreLoader.logger;
  * pre-load data <br>
  * @author billy.qi <a href="mailto:qiyilike@163.com">Contact me.</a>
  */
-class Worker<T> implements Runnable {
+class Worker<T> implements Runnable, IWorker {
 
     private static final ThreadFactory FACTORY = new ThreadFactory() {
         @Override
@@ -42,7 +42,7 @@ class Worker<T> implements Runnable {
     private T loadedData;
     private final List<DataListener<T>> dataListeners = new CopyOnWriteArrayList<>();
     private final Handler mainThreadHandler = new Handler(Looper.getMainLooper());
-    private DataLoader<T> dataLoader;
+    DataLoader<T> dataLoader;
     private volatile State state;
 
     Worker(DataLoader<T> loader, DataListener<T> listener) {
@@ -70,7 +70,8 @@ class Worker<T> implements Runnable {
         }
     }
 
-    void setThreadPoolExecutor(ExecutorService threadPoolExecutor) {
+    @Override
+    public void setThreadPoolExecutor(ExecutorService threadPoolExecutor) {
         if (threadPoolExecutor != null) {
             this.threadPoolExecutor = threadPoolExecutor;
         }
@@ -79,7 +80,8 @@ class Worker<T> implements Runnable {
     /**
      * start to load data
      */
-    boolean preLoad() {
+    @Override
+    public boolean preLoad() {
         return state.startLoad();
     }
 
@@ -93,19 +95,23 @@ class Worker<T> implements Runnable {
         return true;
     }
 
-    boolean refresh() {
+    @Override
+    public boolean refresh() {
         return state.refresh();
     }
 
-    boolean listenData(DataListener<T> dataListener) {
+    @Override
+    public boolean listenData(DataListener dataListener) {
         return state.listenData(dataListener);
     }
 
-    boolean listenData() {
+    @Override
+    public boolean listenData() {
         return state.listenData();
     }
 
-    boolean removeListener(DataListener<T> listener) {
+    @Override
+    public boolean removeListener(DataListener listener) {
         return state.removeListener(listener);
     }
 
@@ -167,7 +173,8 @@ class Worker<T> implements Runnable {
         return true;
     }
 
-    boolean destroy() {
+    @Override
+    public boolean destroy() {
         return state.destroy();
     }
 

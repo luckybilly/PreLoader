@@ -2,6 +2,8 @@ package com.billy.android.preloader;
 
 import com.billy.android.preloader.interfaces.DataListener;
 import com.billy.android.preloader.interfaces.DataLoader;
+import com.billy.android.preloader.interfaces.GroupedDataListener;
+import com.billy.android.preloader.interfaces.GroupedDataLoader;
 
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
@@ -25,7 +27,7 @@ public class PreLoaderPool {
 
     private final AtomicInteger idMaker = new AtomicInteger(0);
 
-    private final ConcurrentHashMap<Integer, Worker> workerMap = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<Integer, IWorker> workerMap = new ConcurrentHashMap<>();
 
     public <T> int preLoad(DataLoader<T> loader) {
         Worker<T> worker = new Worker<>(loader, (DataListener<T>)null);
@@ -49,19 +51,41 @@ public class PreLoaderPool {
         return id;
     }
 
+    public int preLoadGroup(GroupedDataLoader... loaders) {
+        int id = idMaker.incrementAndGet();
+        WorkerGroup group = new WorkerGroup(loaders);
+        workerMap.put(id, group);
+        group.preLoad();
+        return id;
+    }
+
     public boolean exists(int id) {
         return workerMap.containsKey(id);
     }
 
     public boolean listenData(int id) {
-        Worker worker = workerMap.get(id);
+        IWorker worker = workerMap.get(id);
         return worker != null && worker.listenData();
     }
 
     public <T> boolean listenData(int id, DataListener<T> dataListener) {
         try {
-            Worker<T> worker = workerMap.get(id);
+            IWorker worker = workerMap.get(id);
             return worker != null && worker.listenData(dataListener);
+        } catch(Exception e) {
+            logger.throwable(e);
+        }
+        return false;
+    }
+
+    public boolean listenData(int id, GroupedDataListener... listeners) {
+        try {
+            IWorker worker = workerMap.get(id);
+            if (worker != null) {
+                for (GroupedDataListener listener : listeners) {
+                    worker.listenData(listener);
+                }
+            }
         } catch(Exception e) {
             logger.throwable(e);
         }
@@ -70,7 +94,7 @@ public class PreLoaderPool {
 
     public <T> boolean removeListener(int id, DataListener<T> dataListener) {
         try {
-            Worker<T> worker = workerMap.get(id);
+            IWorker worker = workerMap.get(id);
             return worker != null && worker.removeListener(dataListener);
         } catch(Exception e) {
             logger.throwable(e);
@@ -79,17 +103,17 @@ public class PreLoaderPool {
     }
 
     public boolean refresh(int id) {
-        Worker worker = workerMap.get(id);
+        IWorker worker = workerMap.get(id);
         return worker != null && worker.refresh();
     }
 
     public boolean destroy(int id) {
-        Worker worker = workerMap.remove(id);
+        IWorker worker = workerMap.remove(id);
         return worker != null && worker.destroy();
     }
 
     public boolean destroyAll() {
-        for (Worker worker : workerMap.values()) {
+        for (IWorker worker : workerMap.values()) {
             if (worker != null) {
                 try {
                     worker.destroy();
