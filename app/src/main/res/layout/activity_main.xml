@@ -41,5 +41,11 @@
         android:layout_height="wrap_content"
         android:text="@string/pre_loader_before_button_click"
         />
+    <Button
+        android:id="@+id/btn_pre_load_group_before_page"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/pre_loader_group_before_page"
+        />
 
 </LinearLayout>

@@ -9,6 +9,7 @@ import android.view.View;
 
 import com.billy.android.preloader.PreLoader;
 import com.billy.android.preloader.interfaces.DataLoader;
+import com.billy.android.preloader.interfaces.GroupedDataLoader;
 
 /**
  *
@@ -27,6 +28,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 , R.id.btn_pre_load_before_page
                 , R.id.btn_pre_load_inside_page
                 , R.id.btn_pre_load_before_button_click
+                , R.id.btn_pre_load_group_before_page
         );
         //start pre-loader for PreLoadBeforeLaunchActivity
         preLoadBeforeButtonClickId = preLoadForNextActivity();
@@ -72,6 +74,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 intent.putExtra("option", 2);
                 startActivity(intent);
                 break;
+            case R.id.btn_pre_load_group_before_page:
+                intent = new Intent(this, PreLoadGroupBeforeLaunchActivity.class);
+                //start pre-loader for PreLoadBeforeLaunchActivity
+                intent.putExtra("preLoaderId", preLoadGroupForNextActivity());
+                intent.putExtra("option", 1);
+                startActivity(intent);
+                break;
             default:
                 break;
         }
@@ -83,15 +92,54 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return PreLoader.preLoad(new Loader());
     }
 
+    private int preLoadGroupForNextActivity() {
+        // load a group data before activity launch
+        // use PreLoaderPool to do this work
+        return PreLoader.preLoad(new Loader1(), new Loader2());
+    }
+
     class Loader implements DataLoader<String> {
         @Override
         public String loadData() {
-            TimeWatcher timeWatcher = TimeWatcher.obtainAndStart("load data");
+            TimeWatcher timeWatcher = TimeWatcher.obtainAndStart("DataLoader load data");
             try {
                 Thread.sleep(600);
             } catch (InterruptedException ignored) {
             }
             return timeWatcher.stopAndPrint();
+        }
+    }
+
+    class Loader1 implements GroupedDataLoader<String> {
+        @Override
+        public String loadData() {
+            TimeWatcher timeWatcher = TimeWatcher.obtainAndStart("GroupedDataLoader1 load data");
+            try {
+                Thread.sleep(600);
+            } catch (InterruptedException ignored) {
+            }
+            return timeWatcher.stopAndPrint();
+        }
+
+        @Override
+        public String keyInGroup() {
+            return "loader1";
+        }
+    }
+    class Loader2 implements GroupedDataLoader<String> {
+        @Override
+        public String loadData() {
+            TimeWatcher timeWatcher = TimeWatcher.obtainAndStart("GroupedDataLoader2 load data");
+            try {
+                Thread.sleep(400);
+            } catch (InterruptedException ignored) {
+            }
+            return timeWatcher.stopAndPrint();
+        }
+
+        @Override
+        public String keyInGroup() {
+            return "loader2";
         }
     }
 }

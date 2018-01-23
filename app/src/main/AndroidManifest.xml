@@ -17,6 +17,7 @@
         </activity>
         <activity android:name=".PreLoadActivity" />
         <activity android:name=".PreLoadBeforeLaunchActivity" />
+        <activity android:name=".PreLoadGroupBeforeLaunchActivity" />
     </application>
 
 </manifest>
