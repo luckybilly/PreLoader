@@ -1,3 +1,7 @@
+## 2018-01-23 V2.0.0
+    
+    1. add support for group pre-load task with GroupedDataLoader and GroupedDataListener
+
 ## 2018-01-05 V1.1.0 
 
     1. add javadoc for PreLoader 
