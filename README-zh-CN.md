@@ -99,6 +99,84 @@ PreLoader.refresh(preLoaderId);
 PreLoader.destroy(preLoaderId);
 ```
 
+6. 用GroupedDataLoader和GroupedDataListener来开启多个预加载任务（解决页面中有多个预加载任务时id管理不方便的问题）
+```java
+//用GroupedDataLoader开启一组预加载任务，共用同一个id
+int preLoaderId = PreLoader.preLoad(new Loader1(), new Loader2());
+Intent intent = new Intent(this, PreLoadGroupBeforeLaunchActivity.class);
+intent.putExtra("preLoaderId", preLoaderId);
+startActivity(intent);
+
+class Loader1 implements GroupedDataLoader<String> {
+    @Override
+    public String loadData() {
+        TimeWatcher timeWatcher = TimeWatcher.obtainAndStart("GroupedDataLoader1 load data");
+        try {
+            Thread.sleep(600);
+        } catch (InterruptedException ignored) {
+        }
+        return timeWatcher.stopAndPrint();
+    }
+
+    @Override
+    public String keyInGroup() {
+        return "loader1";
+    }
+}
+class Loader2 implements GroupedDataLoader<String> {
+    @Override
+    public String loadData() {
+        TimeWatcher timeWatcher = TimeWatcher.obtainAndStart("GroupedDataLoader2 load data");
+        try {
+            Thread.sleep(400);
+        } catch (InterruptedException ignored) {
+        }
+        return timeWatcher.stopAndPrint();
+    }
+
+    @Override
+    public String keyInGroup() {
+        return "loader2";
+    }
+}
+
+//在UI初始化完成后开始用GroupedDataListener对数据进行监听
+//GroupedDataListener 与 GroupedDataLoader 之间用key进行关联
+// 可以一次开启多个监听
+PreLoader.listenData(preLoaderId
+        , new DataHolder1()
+        , new DataHolder2()
+);
+//也可以分别监听
+PreLoader.listenData(preLoaderId, new DataHolder1());
+PreLoader.listenData(preLoaderId, new DataHolder2());
+
+class DataHolder1 implements GroupedDataListener<String> {
+    @Override
+    public void onDataArrived(String data) {
+        String s = allTime.stopAndPrint();
+        logTextView.append(data + "\n" + s + "\n");
+    }
+
+    @Override
+    public String keyInGroup() {
+        return "loader1";
+    }
+}
+class DataHolder2 implements GroupedDataListener<String> {
+    @Override
+    public void onDataArrived(String data) {
+        String s = allTime.stopAndPrint();
+        logTextView.append(data + "\n" + s + "\n");
+    }
+
+    @Override
+    public String keyInGroup() {
+        return "loader2";
+    }
+}
+```
+
 ## 配合组件化开发框架( CC )使用效果更佳
 
 [CC](https://github.com/luckybilly/CC)框架自带组件层级的AOP，在组件被调用打开Activity之前进行预加载，不需要在每个打开这个Activity的地方调用预加载。

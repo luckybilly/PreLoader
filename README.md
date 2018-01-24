@@ -112,6 +112,80 @@ PreLoader.refresh(preLoaderId);
 PreLoader.destroy(preLoaderId);
 ```
 
+6. start a group of pre-load task with GroupedDataLoader and GroupedDataListener
+```java
+//start pre-load task with a group of GroupedDataLoader(s)
+int preLoaderId = PreLoader.preLoad(new Loader1(), new Loader2());
+Intent intent = new Intent(this, PreLoadGroupBeforeLaunchActivity.class);
+intent.putExtra("preLoaderId", preLoaderId);
+startActivity(intent);
+
+class Loader1 implements GroupedDataLoader<String> {
+    @Override
+    public String loadData() {
+        TimeWatcher timeWatcher = TimeWatcher.obtainAndStart("GroupedDataLoader1 load data");
+        try {
+            Thread.sleep(600);
+        } catch (InterruptedException ignored) {
+        }
+        return timeWatcher.stopAndPrint();
+    }
+
+    @Override
+    public String keyInGroup() {
+        return "loader1";
+    }
+}
+class Loader2 implements GroupedDataLoader<String> {
+    @Override
+    public String loadData() {
+        TimeWatcher timeWatcher = TimeWatcher.obtainAndStart("GroupedDataLoader2 load data");
+        try {
+            Thread.sleep(400);
+        } catch (InterruptedException ignored) {
+        }
+        return timeWatcher.stopAndPrint();
+    }
+
+    @Override
+    public String keyInGroup() {
+        return "loader2";
+    }
+}
+
+//listen data in Activity after UI initialization with GroupedDataListener(s) for each GroupedDataLoader(s)
+//GroupedDataListener matched with GroupedDataLoader by key
+PreLoader.listenData(preLoaderId
+        , new DataHolder1()
+        , new DataHolder2()
+);
+
+class DataHolder1 implements GroupedDataListener<String> {
+    @Override
+    public void onDataArrived(String data) {
+        String s = allTime.stopAndPrint();
+        logTextView.append(data + "\n" + s + "\n");
+    }
+
+    @Override
+    public String keyInGroup() {
+        return "loader1";
+    }
+}
+class DataHolder2 implements GroupedDataListener<String> {
+    @Override
+    public void onDataArrived(String data) {
+        String s = allTime.stopAndPrint();
+        logTextView.append(data + "\n" + s + "\n");
+    }
+
+    @Override
+    public String keyInGroup() {
+        return "loader2";
+    }
+}
+```
+
 ## Better to use with the componentized architecture framework  (CC)
 
 [CC](https://github.com/luckybilly/CC) framework comes with AOP at the component level: when component is calling for start an activity, you can start a pre-load for it. So, it is not need to do pre-load work in every place where you want to start the Activity.
