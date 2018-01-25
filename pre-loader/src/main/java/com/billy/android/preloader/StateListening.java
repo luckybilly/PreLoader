@@ -21,7 +21,7 @@ class StateListening extends StateBase {
     @Override
     public boolean listenData(DataListener listener) {
         super.listenData(listener);
-        return worker.doSendLoadedDataToListenerWork(listener);
+        return worker.doAddListenerWork(listener);
     }
 
     @Override

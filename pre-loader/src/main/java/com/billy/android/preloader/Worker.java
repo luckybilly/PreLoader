@@ -128,11 +128,18 @@ class Worker<T> implements Runnable, IWorker {
         return doSendLoadedDataToListenerWork(dataListeners);
     }
 
-    boolean doSendLoadedDataToListenerWork(DataListener<T> listener) {
-
-        List<DataListener<T>> listeners = null;
+    boolean doAddListenerWork(DataListener<T> listener) {
         if (listener != null) {
             this.dataListeners.add(listener);
+            return true;
+        }
+        return false;
+    }
+
+    boolean doSendLoadedDataToListenerWork(DataListener<T> listener) {
+        doAddListenerWork(listener);
+        List<DataListener<T>> listeners = null;
+        if (listener != null) {
             listeners = new ArrayList<>(1);
             listeners.add(listener);
         }
