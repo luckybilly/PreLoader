@@ -33,7 +33,7 @@ class Worker<T> implements Runnable, IWorker {
         }
     };
 
-    private static ExecutorService defaultThreadPoolExecutor = new ThreadPoolExecutor(2, Integer.MAX_VALUE,
+    private static ExecutorService defaultThreadPoolExecutor = new ThreadPoolExecutor(0, Integer.MAX_VALUE,
                 60L, TimeUnit.SECONDS,
                 new SynchronousQueue<Runnable>(), FACTORY);
 
