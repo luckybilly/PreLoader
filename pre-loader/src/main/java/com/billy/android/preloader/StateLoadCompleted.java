@@ -13,6 +13,12 @@ class StateLoadCompleted extends StateBase {
     }
 
     @Override
+    public boolean refresh() {
+        super.refresh();
+        return worker.doStartLoadWork();
+    }
+
+    @Override
     public boolean listenData() {
         super.listenData();
         return worker.doSendLoadedDataToListenerWork();
