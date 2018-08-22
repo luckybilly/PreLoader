@@ -130,7 +130,9 @@ class Worker<T> implements Runnable, IWorker {
 
     boolean doAddListenerWork(DataListener<T> listener) {
         if (listener != null) {
-            this.dataListeners.add(listener);
+            if (!this.dataListeners.contains(listener)) {
+                this.dataListeners.add(listener);
+            }
             return true;
         }
         return false;
@@ -202,6 +204,7 @@ class Worker<T> implements Runnable, IWorker {
     @Override
     public void run() {
         try {
+            loadedData = null;
             //load data (from network or local i/o)
             loadedData = dataLoader.loadData();
         } catch(Exception e) {
